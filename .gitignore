@@ -1,0 +1,8 @@
+*.exe~
+*.dll
+*.so
+*.dylib
+*.db
+*.db.lock
+*.test
+*.out
