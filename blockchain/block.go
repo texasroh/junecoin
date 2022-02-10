@@ -9,11 +9,15 @@ import (
 	"github.com/texasroh/junecoin/utils"
 )
 
+const difficulty int = 2
+
 type Block struct {
-	Data     string `json:"data"`
-	Hash     string `json:"hash"`
-	PrevHash string `json:"prevHash,omitempty"`
-	Height   int    `json:"height"`
+	Data       string `json:"data"`
+	Hash       string `json:"hash"`
+	PrevHash   string `json:"prevHash,omitempty"`
+	Height     int    `json:"height"`
+	Difficulty int    `json:"difficulty"`
+	Nonce      int    `son:"nonce"`
 }
 
 func (b *Block) restore(data []byte) {
