@@ -1,7 +1,11 @@
 package main
 
-import "github.com/texasroh/junecoin/cli"
+import (
+	"github.com/texasroh/junecoin/blockchain"
+)
 
 func main() {
-	cli.Start()
+	blockchain.Blockchain().AddBlock("First")
+	blockchain.Blockchain().AddBlock("Second")
+	blockchain.Blockchain().AddBlock("Third")
 }
