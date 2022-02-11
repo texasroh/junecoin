@@ -52,7 +52,7 @@ func Blockchain() *blockchain {
 			b = &blockchain{"", 0}
 			checkpoint := db.Checkpoint()
 			if checkpoint == nil {
-				b.AddBlock("Genesis Block")
+				b.AddBlock("Genesis")
 			} else {
 				b.restore(checkpoint)
 			}
