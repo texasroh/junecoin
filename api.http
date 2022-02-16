@@ -22,7 +22,7 @@ POST http://localhost:4000/transactions
 
 {
     "to":"lynn",
-    "amount":50
+    "amount":30
 }
 
 ###
