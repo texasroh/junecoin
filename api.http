@@ -15,6 +15,9 @@ http://localhost:4000/blocks/c57fca35b986fc973b8f1b535ae9970c081606d5bffde0c3def
 
 
 ###
+http://localhost:4000/balance/lynn
+
+###
 http://localhost:4000/balance/june?total=true
 
 ###
@@ -22,7 +25,7 @@ POST http://localhost:4000/transactions
 
 {
     "to":"lynn",
-    "amount":30
+    "amount":65
 }
 
 ###
