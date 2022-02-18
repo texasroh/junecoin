@@ -79,7 +79,7 @@ func (b *blockchain) difficulty() int {
 	}
 }
 
-func (b *blockchain) UTxOutsByAddress(address string) []*TxOut {
+func (b *blockchain) UTxOutsByAddress(address string) []*UTxOut {
 	var uTxOuts []*UTxOut
 	creatorTxs := make(map[string]bool)
 	for _, block := range b.Blocks() {
@@ -99,6 +99,7 @@ func (b *blockchain) UTxOutsByAddress(address string) []*TxOut {
 			}
 		}
 	}
+	return uTxOuts
 }
 
 func (b *blockchain) BalanceByAddress(address string) int {
