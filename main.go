@@ -1,12 +1,7 @@
 package main
 
-import (
-	"github.com/texasroh/junecoin/cli"
-	"github.com/texasroh/junecoin/db"
-)
+import "github.com/texasroh/junecoin/wallet"
 
 func main() {
-	defer db.Close()
-	// blockchain.Blockchain()
-	cli.Start()
+	wallet.Start()
 }
