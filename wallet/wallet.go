@@ -1,28 +1,11 @@
 package wallet
 
-import (
-	"crypto/ecdsa"
-	"crypto/elliptic"
-	"crypto/rand"
-	"encoding/hex"
-	"fmt"
-
-	"github.com/texasroh/junecoin/utils"
-)
-
 const (
+	signature     string = "3dfd7eace0e02fc074da55c7a8c3ba3d7b821e10b5825af01f09eb57cfbb07cd8928a55d26e18a552f056f7d4df32b5b18b3e90fe30c75dbacb58d97ce9e7ba5"
+	privateKey    string = "3077020101042086bb44cd7c927cecd4b4304bb8dd22803769c2da9dd04c7de2d92288cfaa63caa00a06082a8648ce3d030107a1440342000471812e44ceffe112fb6988866307e25b9541e2ce59fda0f886c3dc84d8b675c21377337e3c8f00fd441a1c4b642a3231f8c26e496bb7146c4a8a5b6005db07bb"
 	hashedMessage string = "1c5863cd55b5a4413fd59f054af57ba3c75c0698b3851d70f99b8de2d5c7338f"
 )
 
 func Start() {
-	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
-	utils.HandleErr(err)
-
-	hashAsBytes, err := hex.DecodeString(hashedMessage)
-	utils.HandleErr(err)
-	r, s, err := ecdsa.Sign(rand.Reader, privateKey, hashAsBytes)
-	signature := append(r.Bytes(), s.Bytes()...)
-	fmt.Printf("%x", signature)
-	utils.HandleErr(err)
 
 }
