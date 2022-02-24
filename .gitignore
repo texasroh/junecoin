@@ -6,3 +6,4 @@
 *.db.lock
 *.test
 *.out
+*.wallet
