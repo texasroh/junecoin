@@ -7,6 +7,7 @@ import (
 	"crypto/x509"
 	"encoding/hex"
 	"fmt"
+	"math/big"
 	"os"
 
 	"github.com/texasroh/junecoin/utils"
@@ -63,8 +64,33 @@ func sign(payload string, w *wallet) string {
 	return fmt.Sprintf("%x", signature)
 }
 
-func verify(signature, payload, publicKey string) bool {
+func restoreBigInts(payload string) (*big.Int, *big.Int, error) {
+	bytes, err := hex.DecodeString(payload)
+	if err != nil {
+		return nil, nil, err
+	}
+	firstHalfBytes := bytes[:len(payload)/2]
+	secondHalfBytes := bytes[len(payload)/2:]
+	bigA, bigB := big.Int{}, big.Int{}
+	bigA.SetBytes(firstHalfBytes)
+	bigB.SetBytes(secondHalfBytes)
+	return &bigA, &bigB, nil
+}
 
+func verify(signature, payload, address string) bool {
+	r, s, err := restoreBigInts(signature)
+	utils.HandleErr(err)
+	x, y, err := restoreBigInts(address)
+	utils.HandleErr(err)
+	publicKey := ecdsa.PublicKey{
+		Curve: elliptic.P256(),
+		X:     x,
+		Y:     y,
+	}
+	payloadBytes, err := hex.DecodeString(payload)
+	utils.HandleErr(err)
+	ok := ecdsa.Verify(&publicKey, payloadBytes, r, s)
+	return ok
 }
 
 func Wallet() *wallet {
