@@ -72,8 +72,8 @@ func restoreBigInts(payload string) (*big.Int, *big.Int, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	firstHalfBytes := bytes[:len(payload)/2]
-	secondHalfBytes := bytes[len(payload)/2:]
+	firstHalfBytes := bytes[:len(bytes)/2]
+	secondHalfBytes := bytes[len(bytes)/2:]
 	bigA, bigB := big.Int{}, big.Int{}
 	bigA.SetBytes(firstHalfBytes)
 	bigB.SetBytes(secondHalfBytes)
@@ -93,6 +93,7 @@ func Verify(signature, payload, address string) bool {
 	payloadBytes, err := hex.DecodeString(payload)
 	utils.HandleErr(err)
 	ok := ecdsa.Verify(&publicKey, payloadBytes, r, s)
+	// fmt.Println(x, y, payload, r, s)
 	return ok
 }
 

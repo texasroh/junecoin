@@ -1,7 +1,6 @@
 package blockchain
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/texasroh/junecoin/db"
@@ -146,6 +145,6 @@ func Blockchain() *blockchain {
 			b.restore(checkpoint)
 		}
 	})
-	fmt.Println(b.NewestHash)
+	// fmt.Println(b.NewestHash)
 	return b
 }

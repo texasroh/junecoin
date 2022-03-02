@@ -4,6 +4,8 @@ http://localhost:4000/
 http://localhost:4000/status
 
 ###
+http://localhost:4000/wallet
+###
 
 http://localhost:4000/blocks
 
@@ -15,10 +17,10 @@ http://localhost:4000/blocks/c57fca35b986fc973b8f1b535ae9970c081606d5bffde0c3def
 
 
 ###
-http://localhost:4000/balance/june
+http://localhost:4000/balance/b5598a97208d2b878a506733a17d1f46811eaebaa2749bdf2201691fc542c52f41030a7451a835d50ce647a426f2ede3d3b4a8edb8147e7a7eb9d7d48e0cff7b
 
 ###
-http://localhost:4000/balance/june?total=true
+http://localhost:4000/balance/lynn?total=true
 
 ###
 POST http://localhost:4000/transactions

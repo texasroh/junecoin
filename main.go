@@ -1,7 +1,9 @@
 package main
 
-import "github.com/texasroh/junecoin/wallet"
+import (
+	"github.com/texasroh/junecoin/cli"
+)
 
 func main() {
-	wallet.Wallet()
+	cli.Start()
 }
