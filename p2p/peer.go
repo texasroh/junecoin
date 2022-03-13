@@ -50,7 +50,7 @@ func (p *peer) read() {
 		if err != nil {
 			break
 		}
-		fmt.Println(m.Kind)
+		handleMsg(&m, p)
 	}
 }
 
@@ -66,6 +66,8 @@ func (p *peer) write() {
 }
 
 func initPeer(conn *websocket.Conn, address, port string) *peer {
+	Peers.m.Lock()
+	defer Peers.m.Unlock()
 	key := fmt.Sprintf("%s:%s", address, port)
 	p := &peer{
 		conn:    conn,
@@ -74,8 +76,8 @@ func initPeer(conn *websocket.Conn, address, port string) *peer {
 		key:     key,
 		port:    port,
 	}
-	Peers.v[key] = p
 	go p.read()
 	go p.write()
+	Peers.v[key] = p
 	return p
 }
