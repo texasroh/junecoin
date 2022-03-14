@@ -109,7 +109,8 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 	case "POST":
 		// var addBlockBody addBlockBody
 		// utils.HandleErr(json.NewDecoder(r.Body).Decode(&addBlockBody))
-		blockchain.Blockchain().AddBlock()
+		newBlock := blockchain.Blockchain().AddBlock()
+		p2p.BroadcastNewBlock(newBlock)
 		rw.WriteHeader(http.StatusCreated)
 	}
 }
