@@ -23,7 +23,7 @@ func (b *Block) restore(data []byte) {
 	utils.FromBytes(b, data)
 }
 
-func (b *Block) persist() {
+func persistBlock(b *Block) {
 	db.SaveBlock(b.Hash, utils.ToBytes(b))
 }
 
@@ -53,7 +53,7 @@ func createBlock(prevHash string, height, diff int) *Block {
 	}
 	block.mine()
 	block.Transactions = Mempool.TxToConfirm()
-	block.persist()
+	persistBlock(block)
 	return block
 }
 
