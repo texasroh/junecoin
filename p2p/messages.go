@@ -3,6 +3,7 @@ package p2p
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/texasroh/junecoin/blockchain"
 	"github.com/texasroh/junecoin/utils"
@@ -97,7 +98,7 @@ func handleMsg(m *Message, p *peer) {
 	case MessageNewPeerNotify:
 		var payload string
 		utils.HandleErr(json.Unmarshal(m.Payload, &payload))
-		fmt.Printf("I will now /ws upgrade %s", payload)
-		Addpeer()
+		parts := strings.Split(payload, ":")
+		AddPeer(parts[0], parts[1], parts[2], false)
 	}
 }
