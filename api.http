@@ -23,7 +23,7 @@ http://localhost:4000/balance/b5598a97208d2b878a506733a17d1f46811eaebaa2749bdf22
 http://localhost:4000/balance/lynn?total=true
 
 ###
-POST http://localhost:4000/transactions
+POST http://localhost:3000/transactions
 
 {
     "to":"lynn",
@@ -31,7 +31,7 @@ POST http://localhost:4000/transactions
 }
 
 ###
-http://localhost:4000/mempool
+http://localhost:3000/mempool
 
 
 
