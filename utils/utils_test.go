@@ -2,6 +2,8 @@ package utils
 
 import (
 	"encoding/hex"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"reflect"
 	"testing"
@@ -40,5 +42,70 @@ func TestToBytes(t *testing.T) {
 	k := reflect.TypeOf(b).Kind()
 	if k != reflect.Slice {
 		t.Errorf("ToBytes should return a slice of bytes. Got %s", k)
+	}
+}
+
+func TestSplitter(t *testing.T) {
+	type test struct {
+		input  string
+		sep    string
+		index  int
+		output string
+	}
+	tests := []test{
+		{input: "0:6:0", sep: ":", index: 1, output: "6"},
+		{input: "0:6:0", sep: ":", index: 10, output: ""},
+		{input: "0:6:0", sep: "/", index: 0, output: "0:6:0"},
+	}
+
+	for _, tc := range tests {
+		got := Splitter(tc.input, tc.sep, tc.index)
+		if got != tc.output {
+			t.Errorf("Expected %s and got %s,", tc.output, got)
+		}
+	}
+}
+
+func TestHandleErr(t *testing.T) {
+	oldLogFn := logFn
+	defer func() {
+		logFn = oldLogFn
+	}()
+	called := false
+	logFn = func(v ...interface{}) {
+		called = true
+	}
+	err := errors.New("Test")
+	HandleErr(err)
+	if !called {
+		t.Error("HandleError should call fn")
+	}
+}
+
+func TestFromBytes(t *testing.T) {
+	type testStruct struct {
+		Test string
+	}
+	var restored testStruct
+	ts := testStruct{"test"}
+	b := ToBytes(ts)
+	FromBytes(&restored, b)
+	if !reflect.DeepEqual(ts, restored) {
+		t.Error("FromBytes() should restore struct.")
+	}
+}
+
+func TestToJSON(t *testing.T) {
+	type testStruct struct{ Test string }
+	s := testStruct{"test"}
+	b := ToJSON(s)
+	k := reflect.TypeOf(b).Kind()
+	if k != reflect.Slice {
+		t.Errorf("Expected %v and got %v", reflect.Slice, k)
+	}
+	var restored testStruct
+	json.Unmarshal(b, &restored)
+	if !reflect.DeepEqual(s, restored) {
+		t.Errorf("ToJSON() should encode to JSON correctly")
 	}
 }
