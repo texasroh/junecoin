@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/texasroh/junecoin/db"
 	"github.com/texasroh/junecoin/utils"
 )
 
@@ -24,7 +23,8 @@ func (b *Block) restore(data []byte) {
 }
 
 func persistBlock(b *Block) {
-	db.SaveBlock(b.Hash, utils.ToBytes(b))
+	// db.SaveBlock(b.Hash, utils.ToBytes(b))
+	dbStorage.SaveBlock(b.Hash, utils.ToBytes(b))
 }
 
 func (b *Block) mine() {
@@ -60,7 +60,8 @@ func createBlock(prevHash string, height, diff int) *Block {
 var ErrNotFound = errors.New("block not found")
 
 func FindBlock(hash string) (*Block, error) {
-	blockBytes := db.Block(hash)
+	// blockBytes := db.Block(hash)
+	blockBytes := dbStorage.FindBlock(hash)
 	if blockBytes == nil {
 		return nil, ErrNotFound
 	}
