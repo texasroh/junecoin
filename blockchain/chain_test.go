@@ -5,7 +5,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/nomadcoders/nomadcoin/utils"
+	"github.com/texasroh/junecoin/utils"
 )
 
 type fakeDB struct {
@@ -140,5 +140,41 @@ func TestGetDifficulty(t *testing.T) {
 		if got != tc.want {
 			t.Errorf("getDifficulty() should return %d got %d", tc.want, got)
 		}
+	}
+}
+
+func TestAddPeerBlock(t *testing.T) {
+	bc := &blockchain{
+		Height:            1,
+		CurrentDifficulty: 1,
+		NewestHash:        "xx",
+	}
+	m.Txs["test"] = &Tx{}
+	nb := &Block{
+		Difficulty: 2,
+		Hash:       "test",
+		Transactions: []*Tx{
+			{ID: "test"},
+		},
+	}
+	bc.AddPeerBlock(nb)
+	if bc.CurrentDifficulty != 2 || bc.Height != 2 || bc.NewestHash != "test" {
+		t.Error("AddPeerBlock should mutate the blockchain")
+	}
+}
+
+func TestReplace(t *testing.T) {
+	bc := &blockchain{
+		Height:            1,
+		CurrentDifficulty: 1,
+		NewestHash:        "xx",
+	}
+	blocks := []*Block{
+		{Difficulty: 2, Hash: "test"},
+		{Difficulty: 2, Hash: "test"},
+	}
+	bc.Replace(blocks)
+	if bc.Height != 2 || bc.CurrentDifficulty != 2 || bc.NewestHash != "test" {
+		t.Error("Replace() should mutate the blockchain")
 	}
 }
