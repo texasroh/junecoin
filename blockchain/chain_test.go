@@ -1,6 +1,7 @@
 package blockchain
 
 import (
+	"reflect"
 	"sync"
 	"testing"
 
@@ -50,14 +51,62 @@ func TestBlockchain(t *testing.T) {
 }
 
 func TestBlocks(t *testing.T) {
+	fakeBlocks := 0
 	dbStorage = fakeDB{
 		fakeFindBlock: func() []byte {
-			b := &Block{
-				Height: 1,
+			var b *Block
+			if fakeBlocks == 0 {
+				b = &Block{
+					Height:   1,
+					PrevHash: "x",
+				}
+			} else if fakeBlocks == 1 {
+				b = &Block{
+					Height: 1,
+				}
 			}
+			fakeBlocks++
 			return utils.ToBytes(b)
 		},
 	}
 	bc := &blockchain{}
-	Blocks(bc)
+	blocks := Blocks(bc)
+	if reflect.TypeOf(blocks) != reflect.TypeOf([]*Block{}) {
+		t.Error("Blocks() should return a slice of blocks")
+	}
+}
+
+func TestFindTx(t *testing.T) {
+	t.Run("Tx not found", func(t *testing.T) {
+		dbStorage = fakeDB{
+			fakeFindBlock: func() []byte {
+				b := &Block{
+					Height:       1,
+					Transactions: []*Tx{},
+				}
+				return utils.ToBytes(b)
+			},
+		}
+		tx := FindTx(&blockchain{NewestHash: "x"}, "test")
+		if tx != nil {
+			t.Error("Tx should be not found.")
+		}
+	})
+	t.Run("Tx should be found", func(t *testing.T) {
+		dbStorage = fakeDB{
+			fakeFindBlock: func() []byte {
+				b := &Block{
+					Height: 1,
+					Transactions: []*Tx{
+						{ID: "test"},
+					},
+				}
+				return utils.ToBytes(b)
+			},
+		}
+		tx := FindTx(&blockchain{NewestHash: "x"}, "test")
+		if tx != nil {
+			t.Error("Tx should be not found.")
+		}
+	})
 }
